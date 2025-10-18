@@ -1,0 +1,10 @@
+Hay que darle permiso de ejecución tanto al script sh como al sql:
+
+chmod 764 script.sh
+chmod 764 script_tablas.sql
+
+Después se ejecuta el script .sh:
+
+sudo ./script.sh
+
+Y este ejecuta también el otro, por lo que solo hace falta ejecutar este.
