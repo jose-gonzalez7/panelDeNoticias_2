@@ -60,7 +60,7 @@ INSERT INTO NOTIFICACION (id_notificacion, asunto, cuerpo, id_publicacion) VALUE
 CREATE TABLE usuario (
     id_usuario varchar(20) PRIMARY KEY,
     nombre varchar(50) NOT NULL,
-    email varchar(100) NOT NULL,
+    email varchar(100) NOT NULL UNIQUE,
     rol varchar(13) NOT NULL,
     password_hash varchar(100) NOT NULL
 );
@@ -72,7 +72,7 @@ INSERT INTO usuario (id_usuario, nombre, email, rol, password_hash) VALUES
 ('editor_01', 'editor_1', 'editor@gmail.com', 'editor', '12345678'),
 ('profesor_01', 'profesor_1', 'profesor@gmail.com', 'profesor', '12345678');
 
--- TABLA PANTALLATV (TOKEN INVENTADO)
+-- TABLA PANTALLATV
 
 CREATE TABLE pantallatv (
     id_pantalla varchar(20) PRIMARY KEY,
