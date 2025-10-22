@@ -3,11 +3,12 @@ const jwt = require('jsonwebtoken');
 const prisma = require('../prisma/client');
 
 async function authenticateUser(email, password) {
+  //console.log('Datos enviados por el usuario:', email , password );
   const user = await prisma.usuario.findUnique({ where: { email } });
-  if (!user) throw new Error('Usuario no encontrado');
+  if (!user) throw new Error('Contraseña o usuario incorrecto');
 
-  const valid = await bcrypt.compare(password, user.passwordHash);
-  if (!valid) throw new Error('Contraseña incorrecta');
+  const valid = await bcrypt.compare(password, user.password_hash);
+  if (!valid) throw new Error('Contraseña o usuario incorrecto');
 
   const token = jwt.sign(
     { id: user.id, email: user.email, rol: user.rol },
