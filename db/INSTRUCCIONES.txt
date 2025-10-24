@@ -1,3 +1,8 @@
+El script se debe colocar en la carpeta /tmp
+
+mv ./script.sh /tmp
+mv ./script_tablas.sql /tmp
+
 Hay que darle permiso de ejecución tanto al script sh como al sql:
 
 chmod 764 script.sh
@@ -8,3 +13,10 @@ Después se ejecuta el script .sh:
 sudo ./script.sh
 
 Y este ejecuta también el otro, por lo que solo hace falta ejecutar este.
+
+SI DA PROBLEMA AL EJECUTAR EL SCRIPT HACER LO SIGUIENTE
+
+apt install dos2unix
+
+dos2unix script.sh
+
