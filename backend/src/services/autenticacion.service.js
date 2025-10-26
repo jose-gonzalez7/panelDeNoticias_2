@@ -16,7 +16,14 @@ async function authenticateUser(email, password) {
     { expiresIn: '2h' }
   );
 
-  return token;
+  return {
+    token,
+    user: {
+      nombre: user.nombre,
+      email: user.email,
+      rol: user.rol
+    }
+  };
 }
 
 module.exports = { authenticateUser };
