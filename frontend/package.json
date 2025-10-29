@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.15",
     "@types/node": "24.5.2",
@@ -14,10 +15,30 @@
     "react": "^19.1.1",
     "react-dom": "^19.1.1"
   },
+=======
+  "name": "frontend",
+  "version": "0.1.0",
+  "private": true,
+>>>>>>> 17d54c6387f242459aeac62c8e56fcc9c56848ea
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "eslint"
+  },
+  "dependencies": {
+    "react": "19.2.0",
+    "react-dom": "19.2.0",
+    "next": "16.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@tailwindcss/postcss": "^4",
+    "tailwindcss": "^4",
+    "eslint": "^9",
+    "eslint-config-next": "16.0.0"
   }
 }

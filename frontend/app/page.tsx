@@ -1,8 +1,9 @@
+'use client';
+import { useState } from "react";
+
 export default function Home() {
+  
   return (
-    <h1 className="text-4xl font-bold text-blue-600">
-      ¡Tailwind funciona!
-    </h1>
+    <div>hola</div>
   );
 }
-
