@@ -1,4 +1,0 @@
--- Script to create the database and tables
--- Run this script in your SQL environment to set up the database
--- poner que cree la base de datos si no existe importante , igual que las tablas
--- y crear un entorno de pruebas con ejemplos de datos
