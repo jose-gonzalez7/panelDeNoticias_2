@@ -28,13 +28,32 @@ async function mandarAapi(mail:String, password:String, router: any) {
         }
 
         // Intentar obtener el JSON de la respuesta
-        const result = await response.json();
-        console.log("Respuesta de la API:", result);
+        const respuestajson = await response.json();
+        console.log("Respuesta de la API:", respuestajson);
 
         // Verificar si la respuesta fue exitosa
-        if (result && result.success) {
-          // !!! aqui se tiene que poner los case para cada tipo de usuario!!! 
-            router.push("/dashboard");
+        if (respuestajson && respuestajson.success) {
+          // switch para segun que usuario
+            const tipousuario = respuestajson.user.rol;  
+            switch (tipousuario) {
+                case "administrador":
+                    router.push("/admin");
+
+                    break;
+                case "administrador":
+                    router.push("/editor");
+                    break;
+                case "administrador":
+                    router.push("/lector");
+                    break;
+            
+                default:
+                    router.push("/error");
+                    break;
+            }
+
+            document.cookie = `token=${respuestajson.token}; path=/; max-age=86400`;
+            
         } else {
             router.push("/error");
         }
