@@ -13,22 +13,13 @@ type publicacion = {
     cuerpo: 'Este es el cuerpo de la noticia de ejemplo. Aquí puedes poner un resumen o contenido más largo.'
   };
 
-const URL = "https://cambiarelenpoint";
+const URL = "https://servidorpanelnoticias-production.up.railway.app/api/publicaciones";
 
-async function mandarAapi(tok: string): Promise<publicacion[]> {
+async function mandarAapi(): Promise<publicacion[]> {
     try {
-        const data = {
-          token: tok
-        };
-
         // Enviar con fetch a la API
-        console.log(JSON.stringify(data));
         const response = await fetch(URL, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(data)
+          credentials: "include",
         });
 
         // Si la respuesta no es ok(pruebas !! esto se eliminara)
@@ -38,22 +29,20 @@ async function mandarAapi(tok: string): Promise<publicacion[]> {
 
         // Intentar obtener el JSON de la respuesta
   
-        const respuestajson = await response.json();
-        console.log("Respuesta de la API:", respuestajson);
+      const respuestajson = await response.json();
+      console.log("Respuesta de la API:", respuestajson);
 
-        if (respuestajson && respuestajson.success && Array.isArray(respuestajson.data)) {
-          
-          // !!! aqui tengo que modificar para trasformar el json que me venga , en un array valido !!!
-          return respuestajson.data;
-        }
 
-        // esto seguramente se borre
-        if (Array.isArray(respuestajson)) {
-          return respuestajson;
-        }
-
-        // esto es para que el typescript no me de dolor de cabeza
-        return [ejemplopublicacion];
+        const arraypublicaciones: publicacion[]= []
+        respuestajson.forEach((element: publicacion) => {
+          let publicacionaux: publicacion = {
+            titulo: element.titulo,
+            cuerpo: element.cuerpo
+          };
+          arraypublicaciones.push(publicacionaux);
+        });
+        
+        return arraypublicaciones;
 
     } catch (error) {
         // Captura cualquier error 
@@ -63,16 +52,18 @@ async function mandarAapi(tok: string): Promise<publicacion[]> {
 
 export default function Home() {  
 
-const [noticias, setnoticias] = useState<publicacion[]>([]);
+  const [noticias, setnoticias] = useState<publicacion[]>([]);
 
   useEffect(() => {
     let mounted = true;
 
     const fetcher = async () => {
-      const llamada = await mandarAapi("ttt");
+      const llamada = await mandarAapi();
       if (!mounted) return;
       setnoticias(llamada);
     };
+
+    fetcher()
 
     const id = setInterval(fetcher, 5000);
 
@@ -81,28 +72,17 @@ const [noticias, setnoticias] = useState<publicacion[]>([]);
       clearInterval(id);
     };
   }, []);
-  
+  //!! aqui tendra que modificar el perez!!
   return (
     <div className="min-h-screen w-full flex items-start justify-center pt-8">
-      <div className="grid grid-cols-2 gap-4 w-4/5 bg-white/5 rounded-lg p-6 text-center">
-      {
-        noticias.map((publicacion,indice) => (
-          <div className="" key={indice}>
-            <Publicacion not={publicacion}></Publicacion>
-          </div>
-        ))
-      }
-      
-      <Publicacion not={ejemplopublicacion}></Publicacion>
-      <Publicacion not={ejemplopublicacion}></Publicacion>
-      <Publicacion not={ejemplopublicacion}></Publicacion>
-      <Publicacion not={ejemplopublicacion}></Publicacion>
-      <Publicacion not={ejemplopublicacion}></Publicacion>
-      <Publicacion not={ejemplopublicacion}></Publicacion>
-      <Publicacion not={ejemplopublicacion}></Publicacion>
-      <Publicacion not={ejemplopublicacion}></Publicacion>
-
-
+      <div className="grid grid-cols-1 gap-4 w-4/5 bg-white/5 rounded-lg p-6 text-center">
+        {
+          noticias.map((publicacion,indice) => (
+            <div className="" key={indice}>
+              <Publicacion not={publicacion}></Publicacion>
+            </div>
+          ))
+        }
       </div>
       
 

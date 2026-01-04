@@ -2,7 +2,7 @@
 import React from "react";
 import { useRouter } from "next/navigation";
 
-const URL = "https://fallible-tenthly-memphis.ngrok-free.dev/api/login";
+const URL = "https://servidorpanelnoticias-production.up.railway.app/api/login";
 
 async function mandarAapi(mail:String, password:String, router: any) {
     try {
@@ -15,6 +15,7 @@ async function mandarAapi(mail:String, password:String, router: any) {
         console.log(JSON.stringify(data));
         const response = await fetch(URL, {
             method: "POST",
+            credentials: "include",
             headers: {
                 "Content-Type": "application/json",
             },
@@ -37,23 +38,20 @@ async function mandarAapi(mail:String, password:String, router: any) {
             const tipousuario = respuestajson.user.rol;  
             switch (tipousuario) {
                 case "administrador":
-                    router.push("/admin");
+                    router.push("/vision");
 
                     break;
                 case "administrador":
                     router.push("/editor");
                     break;
-                case "administrador":
-                    router.push("/lector");
+                case "profesor":
+                    router.push("/vision");
                     break;
             
                 default:
                     router.push("/error");
                     break;
-            }
-
-            document.cookie = `token=${respuestajson.token}; path=/; max-age=86400`;
-            
+            }   
         } else {
             router.push("/error");
         }
