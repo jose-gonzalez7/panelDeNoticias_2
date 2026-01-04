@@ -38,7 +38,7 @@ async function mandarAapi(mail:String, password:String, router: any) {
             const tipousuario = respuestajson.user.rol;  
             switch (tipousuario) {
                 case "administrador":
-                    router.push("/vision");
+                    router.push("/admin");
 
                     break;
                 case "administrador":
