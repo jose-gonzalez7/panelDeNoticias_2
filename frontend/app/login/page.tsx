@@ -41,7 +41,7 @@ async function mandarAapi(mail:String, password:String, router: any) {
                     router.push("/admin");
 
                     break;
-                case "administrador":
+                case "editor":
                     router.push("/editor");
                     break;
                 case "profesor":
