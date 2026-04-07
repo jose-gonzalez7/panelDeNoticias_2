@@ -98,41 +98,34 @@ const EliminarPublicacion: React.FC<Props> = ({ idPublicacion, onEliminado }) =>
   //Parte visible
 
   return (
-    // Botones
-    <div className="space-y-2">
+    <div className="space-y-6 text-center">
       {!confirmado ? (
-        // Botón de eliminar
         <button
           onClick={() => setConfirmado(true)}
-          className="text-red-600 hover:underline text-sm"
+          className="w-full rounded-2xl bg-red-600/20 border border-red-500/50 px-6 py-4 text-red-400 font-bold uppercase tracking-widest text-[11px] hover:bg-red-600 hover:text-white transition-all shadow-lg"
         >
-          Eliminar
+          Confirmar Eliminación
         </button>
       ) : (
-        // Capa de confirmación de eliminación
-        <div className="space-x-2 text-sm">
-          <span>¿Confirmas la eliminación?</span>
-
-          {/* Sí */}
-          <button
-            onClick={handleEliminar}
-            className="text-red-600 hover:underline font-medium"
-          >
-            Sí
-          </button>
-
-          {/* No */}
-          <button
-            onClick={() => setConfirmado(false)}
-            className="text-gray-600 hover:underline font-medium"
-          >
-            No
-          </button>
+        <div className="space-y-4 text-left">
+          <span className="block text-sm font-bold text-white mb-4 text-center">¿Estás completamente seguro? Esta acción es irreversible.</span>
+          <div className="flex gap-4 justify-center">
+             <button
+                onClick={handleEliminar}
+                className="flex-1 rounded-2xl bg-red-600 px-6 py-4 text-white font-bold uppercase tracking-widest text-[11px] hover:bg-red-700 transition-all shadow-[0_0_20px_rgba(220,38,38,0.4)]"
+             >
+                Sí, Eliminar
+             </button>
+             <button
+                onClick={() => setConfirmado(false)}
+                className="flex-1 rounded-2xl bg-[#1e293b]/50 border border-white/10 px-6 py-4 text-slate-300 font-bold uppercase tracking-widest text-[11px] hover:bg-white/10 transition-all"
+             >
+                No, Mantener
+             </button>
+          </div>
         </div>
       )}
-
-      {/* Muestra el mensaje */}
-      {mensaje && <p className="text-sm text-gray-600">{mensaje}</p>}
+      {mensaje && <p className="text-sm font-bold text-[#F2A931] mt-4">{mensaje}</p>}
     </div>
   );
 };

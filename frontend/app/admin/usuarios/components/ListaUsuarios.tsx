@@ -100,110 +100,106 @@ useEffect(() => {
 
 //Parte visible
 return (
-    <div className="max-w-4xl mx-auto mt-8 p-4 bg-white rounded shadow border border-gray-200">
+    <div className="w-full z-10 space-y-12">
 
-        {/* Formulario para crear un nuevo usuario */}
         <FormularioUsuario onCreado={fetchUsuarios}/>
 
-        {/*Lista de usuarios*/}
-        <h2 className="text-2xl font-semibold mb-4 text-gray-800">Lista de Usuarios</h2>
+        <div>
+            <h2 className="text-xl md:text-2xl font-bold mb-6 text-white tracking-tight flex items-center">
+              <span className="w-1.5 h-6 bg-[#F2A931] rounded-full mr-3 border border-white/20"></span>
+              Lista de Usuarios
+            </h2>
 
-        {/*Muestra el estado*/}
-        {cargando && <p className="text-gray-600">Cargando usuarios...</p>}
-        {error && <p className="text-red-600">{error}</p>}
+            {cargando && <p className="text-[#F2A931] animate-[pulse_1.5s_ease-in-out_infinite] font-semibold tracking-wide">Cargando usuarios...</p>}
+            {error && <div className="p-5 rounded-[1.5rem] bg-red-900/30 border border-red-500/30 text-red-200 backdrop-blur-md shadow-lg font-medium">{error}</div>}
 
-        {/* Genera la tabla al terminar de cargar y si no hay errores*/}
-        {!cargando && !error && (
+            {!cargando && !error && (
+                <div className="relative group/table mb-10">
+                    <div className="absolute -inset-1 bg-gradient-to-r from-[#1e293b] to-[#F2A931] rounded-[2rem] blur opacity-10 group-hover/table:opacity-20 transition-opacity duration-500"></div>
+                    <div className="overflow-x-auto rounded-[2rem] border border-white/5 shadow-[0_8px_32px_0_rgba(0,0,0,0.3)] bg-[#0a0f1a]/60 backdrop-blur-2xl relative z-10">
+                        <div className="absolute top-0 left-0 w-32 h-32 bg-[#F2A931]/5 rounded-full blur-2xl pointer-events-none"></div>
+                        <table className="w-full min-w-[600px] table-auto border-collapse relative z-10">
+                            <thead>
+                                <tr className="bg-[#1e293b]/40 text-left text-[11px] uppercase tracking-[0.2em] text-slate-400 border-b border-white/5">
+                                    <th className="px-6 py-5 font-bold">Nombre</th>
+                                    <th className="px-6 py-5 font-bold">Email</th>
+                                    <th className="px-6 py-5 font-bold">Rol</th>
+                                    <th className="px-6 py-5 font-bold text-center">Acciones</th>
+                                </tr>
+                            </thead>
 
-        <table className="w-full table-auto border-collapse">
+                            <tbody className="divide-y divide-white/5">
+                                {usuarios.map((usuario) => (
+                                    <tr key={usuario.id} className="text-sm hover:bg-[#1e293b]/30 transition-colors">
+                                        <td className="px-6 py-5 font-semibold text-gray-200 whitespace-nowrap">{usuario.nombre}</td>
+                                        <td className="px-6 py-5 font-mono text-slate-400 whitespace-nowrap">{usuario.email}</td>
+                                        <td className="px-6 py-5">
+                                            <span className="px-3 py-1.5 rounded-full bg-[#1e293b] border border-white/10 text-[#F2A931] text-[10px] font-bold uppercase tracking-widest shadow-inner">
+                                                {usuario.rol}
+                                            </span>
+                                        </td>
+                                        <td className="px-6 py-5 text-center">
+                                            <div className="flex justify-center gap-6">
+                                                <button 
+                                                    className="text-slate-400 font-bold hover:text-[#F2A931] transition-colors underline-offset-4 hover:underline whitespace-nowrap" 
+                                                    onClick={() => setUsuarioEditando(usuario)}
+                                                >
+                                                    Editar
+                                                </button>
+                                                <button 
+                                                    className="text-slate-500 font-bold hover:text-red-400 transition-colors underline-offset-4 hover:underline whitespace-nowrap" 
+                                                    onClick={() => setUsuarioEliminando(usuario)}
+                                                >
+                                                    Eliminar
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            )}
 
-            <thead>
+            {usuarioEditando && (
+                <div className="mt-10 mb-10 relative">
+                    <div className="absolute -inset-1 bg-gradient-to-r from-[#1e293b] to-blue-600/30 rounded-[2rem] blur opacity-15"></div>
+                    <div className="p-8 rounded-[2rem] bg-[#0a0f1a]/80 border border-white/5 shadow-2xl backdrop-blur-2xl relative z-10">
+                        <FormularioModificarUsuario 
+                            nombreActual={usuarioEditando.nombre} 
+                            email={usuarioEditando.email} 
+                            onModificado={() => {
+                                fetchUsuarios();
+                                setUsuarioEditando(null);
+                            }}
+                        />
+                    </div>
+                </div>
+            )}
 
-                <tr className="bg-gray-100 text-left text-sm text-gray-700">
-
-                <th className="p-2 border">Nombre</th>
-                <th className="p-2 border">Email</th>
-                <th className="p-2 border">Rol</th>
-                <th className="p-2 border">Acciones</th>
-
-                </tr>
-
-            </thead>
-
-            <tbody>
-
-                {usuarios.map((usuario) => (
-
-                <tr key={usuario.id} className="text-sm text-gray-800 hover:bg-gray-50">
-
-                    <td className="p-2 border">{usuario.nombre}</td>
-                    <td className="p-2 border">{usuario.email}</td>
-                    <td className="p-2 border capitalize">{usuario.rol}</td>
-                    <td className="p-2 border">
-
-                    {/* BOTONES EDITAR Y ELIMINAR */}
-                    <button className="text-blue-600 hover:underline mr-2" onClick={() => setUsuarioEditando(usuario)}>
-
-                        Editar
-
-                    </button>
-                    <button className="text-red-600 hover:underline" onClick={() => setUsuarioEliminando(usuario)}>
-
-                        Eliminar
-
-                    </button>
-
-
-                    </td>
-
-                </tr>
-
-            ))}
-
-            </tbody>
-
-        </table>
-
-    )}
-
-    {usuarioEditando && (
-
-        <div className="mt-6">
-
-            <FormularioModificarUsuario nombreActual={usuarioEditando.nombre} email={usuarioEditando.email} 
-            onModificado={() => {
-            fetchUsuarios(); //Actualiza la lista
-            setUsuarioEditando(null); //Cierra el formulario
-            }}
-            />
-
+            {usuarioEliminando && (
+                <div className="mt-10 mb-10 relative">
+                    <div className="absolute -inset-1 bg-gradient-to-r from-red-600 to-[#F2A931] rounded-[2rem] blur opacity-15"></div>
+                    <div className="p-8 rounded-[2rem] bg-[#0a0f1a]/80 border border-red-500/20 shadow-2xl backdrop-blur-2xl relative z-10">
+                        <EliminarUsuarios 
+                            email={usuarioEliminando.email} 
+                            onEliminado={() => {
+                                fetchUsuarios();
+                                setUsuarioEliminando(null);
+                            }}
+                        />
+                        <button 
+                            className="mt-6 w-full text-center py-4 border border-white/10 rounded-2xl bg-white/5 text-sm font-bold text-slate-300 hover:text-white hover:bg-white/10 hover:border-white/20 transition-all font-sans uppercase tracking-[0.1em]" 
+                            onClick={() => setUsuarioEliminando(null)}
+                        >
+                            Cancelar
+                        </button>
+                    </div>
+                </div>
+            )}
         </div>
-
-    )}
-
-    {usuarioEliminando && (
-
-        <div className="mt-6">
-
-            <EliminarUsuarios email={usuarioEliminando.email} 
-            onEliminado={() => {
-            fetchUsuarios(); //Actualiza la lista
-            setUsuarioEliminando(null); //Oculta la confirmación
-            }}
-            />
-
-            <button className="text-sm text-gray-500 hover:underline mt-2" onClick={() => setUsuarioEliminando(null)}>
-
-                Cancelar
-
-            </button>
-
-        </div>
-
-    )}
-
     </div>
-
 );
 
 };

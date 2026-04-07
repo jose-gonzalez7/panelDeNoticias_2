@@ -87,49 +87,27 @@ const FormularioModificarUsuario: React.FC<Props> = ({ nombreActual, email, onMo
 //Parte visible
 
 return (
-
-    //Formulario
-
-    <form onSubmit={handleSubmit} className="max-w-md space-y-4 bg-white p-6 rounded-lg shadow-md border border-gray-200">
-
-        <h2 className="text-xl font-semibold text-gray-800">Modificar Nombre</h2>
-
-        <div>
-
-            <label htmlFor="nombre" className="block text-sm font-medium text-gray-700">
-
+    <form onSubmit={handleSubmit} className="max-w-md mx-auto space-y-6 bg-transparent">
+        <h2 className="text-xl font-bold text-white tracking-widest uppercase mb-4">Modificar Nombre</h2>
+        <div className="group">
+            <label htmlFor="nombre" className="block text-[11px] font-bold uppercase tracking-widest text-[#F2A931] mb-2">
             Nuevo nombre
-
             </label>
-
         <input
-
             type="text"
             id="nombre"
             name="nombre"
             value={nombre}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNombre(e.target.value)}
             required
-            className="mt-1 w-full rounded border border-gray-300 px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-
+            className="w-full rounded-2xl border border-white/10 bg-[#1e293b]/50 px-5 py-4 text-sm text-white shadow-inner transition-all hover:bg-white/5 focus:border-[#F2A931]/50 focus:bg-[#1e293b]/80 focus:outline-none focus:ring-1 focus:ring-[#F2A931]/60"
         />
-
         </div>
-
-        {/* Botón de guardar cambios */}
-
-        <button type="submit" className="w-full rounded bg-blue-600 px-4 py-2 text-white font-medium hover:bg-blue-500 transition">
-
+        <button type="submit" className="w-full relative overflow-hidden rounded-2xl bg-white/10 border border-white/20 px-6 py-4 text-white font-bold tracking-widest uppercase text-[11px] transition-all duration-300 hover:bg-[#F2A931] hover:text-[#0a0f1a] hover:border-[#F2A931] hover:-translate-y-1 focus:outline-none group/btn mt-4">
             Guardar cambios
-
         </button>
-
-        {/* Muestra el mensaje*/}
-
-        {mensaje && <p className="text-sm text-gray-600 mt-2">{mensaje}</p>}
-
+        {mensaje && <p className="text-sm text-[#F2A931] mt-4 font-bold text-center">{mensaje}</p>}
     </form>
-
     );
   
 };

@@ -1,86 +1,47 @@
 import React from 'react';
 import Image from "next/image";
+import logo from "../../public/imagenes/logotransparente.png";
 import { FaHome, FaUsers, FaTags, FaPowerOff } from "react-icons/fa";
 
 const SideNav = () => {
-
     return (
-
-        <div className="flex h-full flex-col px-3 py-4 md:px-2">
-
-            {/*LOGO */}
-                
-            <a href="" className="mb-2 flex h-20 items-end justify-start bg-slate-900 p-4 md:h-40">
-
-                <div className="w-32 text-white md:w-40">
-
+        <div className="flex h-full flex-col px-4 py-6 md:px-6 relative z-10 w-full">
+            <a href="" className="mb-8 flex h-24 items-center justify-center p-2 md:h-32 transition-transform duration-300 hover:scale-105">
+                <div className="text-white w-full flex justify-center">
                     <Image
-                        src="/imagenes/logo.png"
+                        src={logo}
                         alt="Logo"
-                        width={160}
-                        height={80}
-                        className="object-contain"
-                        />
-
-
+                        width={200}
+                        height={100}
+                        className="object-contain drop-shadow-[0_0_15px_rgba(255,255,255,0.1)]"
+                    />
                 </div>
-
             </a>
-
-            <div className="flex grow flex-row justify-between space-x-2 md:flex-col md:space-x-0 md:space-y-2">
-
-                {/* DASHBOARD */}
-
-                <a href="/admin/" className="flex h-12 grow items-center justify-center gap-2 rounded-md 
-                bg-slate-500 p-3 text-lg text-white font-bold hover:bg-slate-400 hover:text-white 
-                md:flex-none md:justify-start md:p-2 md:px-3">
-
-                    <FaHome className="w-6"/>
+            <div className="flex grow flex-row justify-between space-x-2 md:flex-col md:space-x-0 md:space-y-4 pt-4 border-t border-white/10 md:pt-8 w-full">
+                <a href="/admin/" className="group flex h-14 grow items-center justify-center gap-4 rounded-2xl bg-transparent p-3 text-[13px] text-slate-400 font-bold uppercase tracking-widest hover:bg-[#1e293b]/50 hover:text-white hover:border hover:border-white/10 transition-all duration-300 md:flex-none md:justify-start md:px-6 overflow-hidden relative">
+                    <div className="absolute inset-0 w-1 bg-[#F2A931] transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300"></div>
+                    <FaHome className="w-5 h-5 transition-transform duration-300 group-hover:scale-110 group-hover:text-[#F2A931]" />
                     <p className="hidden md:block">Dashboard</p>
-
                 </a>
-
-                {/* USUARIOS */}
-
-                <a href="/admin/usuarios" className="flex h-12 grow items-center justify-center gap-2 rounded-md 
-                bg-slate-500 p-3 text-lg text-white font-bold hover:bg-slate-400 hover:text-white 
-                md:flex-none md:justify-start md:p-2 md:px-3">
-
-                    <FaUsers className="w-6" />
+                <a href="/admin/usuarios" className="group flex h-14 grow items-center justify-center gap-4 rounded-2xl bg-transparent p-3 text-[13px] text-slate-400 font-bold uppercase tracking-widest hover:bg-[#1e293b]/50 hover:text-white hover:border hover:border-white/10 transition-all duration-300 md:flex-none md:justify-start md:px-6 overflow-hidden relative">
+                    <div className="absolute inset-0 w-1 bg-[#F2A931] transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300"></div>
+                    <FaUsers className="w-5 h-5 transition-transform duration-300 group-hover:scale-110 group-hover:text-[#F2A931]" />
                     <p className="hidden md:block">Usuarios</p>
-
                 </a>
-
-                {/* CATEGORIAS */}
-
-                <a href="/admin/categorias" className="flex h-12 grow items-center justify-center gap-2 rounded-md 
-                bg-slate-500 p-3 text-lg text-white font-bold hover:bg-slate-400 hover:text-white 
-                md:flex-none md:justify-start md:p-2 md:px-3">
-
-                    <FaTags className="w-6" />
+                <a href="/admin/categorias" className="group flex h-14 grow items-center justify-center gap-4 rounded-2xl bg-transparent p-3 text-[13px] text-slate-400 font-bold uppercase tracking-widest hover:bg-[#1e293b]/50 hover:text-white hover:border hover:border-white/10 transition-all duration-300 md:flex-none md:justify-start md:px-6 overflow-hidden relative">
+                    <div className="absolute inset-0 w-1 bg-[#F2A931] transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300"></div>
+                    <FaTags className="w-5 h-5 transition-transform duration-300 group-hover:scale-110 group-hover:text-[#F2A931]" />
                     <p className="hidden md:block">Categorias</p>
-
                 </a>
-
-                        {/* CERRAR SESIÓN */}
-
-                <a href="/login" className="flex h-12 grow items-center justify-center gap-2 rounded-md 
-                bg-slate-500 p-3 text-lg text-white font-bold hover:bg-slate-400 hover:text-white 
-                md:flex-none md:justify-start md:p-2 md:px-3">
-
-                    <FaPowerOff className="w-6" />
-                    <p className="hidden md:block">Cerrar Sesión</p>
-
-                </a>
-
                 <div className="hidden h-auto w-full grow md:block"></div>
-
-                    </div>
-                
-                </div>
-
+                <a href="/login" className="group flex h-14 grow items-center justify-center gap-4 rounded-2xl bg-transparent p-3 text-[13px] text-slate-400 font-bold uppercase tracking-widest hover:bg-red-500/10 hover:text-red-400 hover:border hover:border-red-500/20 transition-all duration-300 md:flex-none md:justify-start md:px-6 mt-auto overflow-hidden relative">
+                     <div className="absolute inset-0 w-1 bg-red-500 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300"></div>
+                    <FaPowerOff className="w-5 h-5 transition-transform duration-300 group-hover:scale-110 group-hover:text-red-400" />
+                    <p className="hidden md:block">Cerrar Sesión</p>
+                </a>
+            </div>
+        </div>
     );
-
 };
 
 export default SideNav;

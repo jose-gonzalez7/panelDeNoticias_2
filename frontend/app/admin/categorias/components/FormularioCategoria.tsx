@@ -103,63 +103,77 @@ const FormularioCategoria: React.FC<Props> = ({ onCreado }) => {
 
   //Parte visible
   return (
-    // Formulario de creación de categoría
-    <form
-      onSubmit={handleSubmit}
-      className="max-w-md space-y-4 bg-white p-6 rounded-lg shadow-md border border-gray-200"
-    >
-      <h2 className="text-xl font-semibold text-gray-800">Crear Categoría</h2>
+  <form
+    onSubmit={handleSubmit}
+    className="max-w-xl space-y-7 bg-[#0a0f1a]/60 p-8 md:p-10 rounded-[2rem] border border-white/5 shadow-[0_8px_32px_0_rgba(0,0,0,0.4)] backdrop-blur-2xl relative overflow-hidden group/form"
+  >
+    <div className="absolute top-0 right-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#F2A931] to-transparent opacity-40"></div>
+    <div className="absolute -top-16 -left-16 w-32 h-32 bg-[#F2A931]/10 rounded-full blur-3xl pointer-events-none"></div>
 
-      {/* ID Categoría */}
-      <div>
-        <label
-          htmlFor="id_categoria"
-          className="block text-sm font-medium text-gray-700"
-        >
-          ID Categoría
-        </label>
-        <input
-          type="text"
-          id="id_categoria"
-          name="id_categoria"
-          value={formData.id_categoria}
-          onChange={handleChange}
-          required
-          className="mt-1 w-full rounded border border-gray-300 px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-      </div>
+    <h2 className="text-2xl font-extrabold text-white tracking-tight border-b border-white/10 pb-5">
+      Crear Categoría<span className="text-[#F2A931]">.</span>
+    </h2>
 
-      {/* Nombre */}
-      <div>
-        <label
-          htmlFor="nombre"
-          className="block text-sm font-medium text-gray-700"
-        >
-          Nombre
-        </label>
-        <input
-          type="text"
-          id="nombre"
-          name="nombre"
-          value={formData.nombre}
-          onChange={handleChange}
-          required
-          className="mt-1 w-full rounded border border-gray-300 px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-      </div>
-
-      {/* Botón de crear categoría */}
-      <button
-        type="submit"
-        className="w-full rounded bg-blue-600 px-4 py-2 text-white font-medium hover:bg-blue-500 transition"
+    <div className="flex flex-col space-y-2 group">
+      <label
+        htmlFor="id_categoria"
+        className="block text-[11px] font-bold uppercase tracking-widest text-slate-400 group-focus-within:text-[#F2A931] transition-colors duration-300 ml-1"
       >
-        Crear Categoría
-      </button>
+        ID Categoría
+      </label>
+      <input
+        type="text"
+        id="id_categoria"
+        name="id_categoria"
+        value={formData.id_categoria}
+        onChange={handleChange}
+        required
+        placeholder="Ej: TEC-01"
+        className="w-full rounded-2xl border border-white/10 bg-[#1e293b]/30 px-5 py-4 text-sm text-white shadow-inner transition-all hover:bg-white/5 focus:border-[#F2A931]/50 focus:bg-[#1e293b]/50 focus:outline-none focus:ring-1 focus:ring-[#F2A931]/60 placeholder:text-slate-600"
+      />
+    </div>
 
-      {/* Mensaje */}
-      {mensaje && <p className="text-sm text-gray-600 mt-2">{mensaje}</p>}
-    </form>
-  );
+    <div className="flex flex-col space-y-2 group">
+      <label
+        htmlFor="nombre"
+        className="block text-[11px] font-bold uppercase tracking-widest text-slate-400 group-focus-within:text-[#F2A931] transition-colors duration-300 ml-1"
+      >
+        Nombre de la Categoría
+      </label>
+      <input
+        type="text"
+        id="nombre"
+        name="nombre"
+        value={formData.nombre}
+        onChange={handleChange}
+        required
+        placeholder="Ej: Tecnología"
+        className="w-full rounded-2xl border border-white/10 bg-[#1e293b]/30 px-5 py-4 text-sm text-white shadow-inner transition-all hover:bg-white/5 focus:border-[#F2A931]/50 focus:bg-[#1e293b]/50 focus:outline-none focus:ring-1 focus:ring-[#F2A931]/60 placeholder:text-slate-600"
+      />
+    </div>
+
+    <div className="pt-2">
+        <button
+          type="submit"
+          className="w-full relative overflow-hidden rounded-2xl bg-[#F2A931] px-6 py-4 text-[#0a0f1a] font-bold tracking-widest uppercase text-[11px] shadow-[0_0_20px_rgba(242,169,49,0.15)] transition-all duration-300 hover:shadow-[0_0_30px_rgba(242,169,49,0.3)] hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-[#F2A931] focus:ring-offset-2 focus:ring-offset-[#0a0f1a] group/btn"
+        >
+          <span className="relative z-10 flex items-center justify-center gap-2">
+            Confirmar Creación
+            <svg className="w-4 h-4 transition-transform duration-300 group-hover/btn:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+          </span>
+          <div className="absolute inset-0 h-full w-full bg-white/20 transform scale-x-0 group-hover/btn:scale-x-100 origin-left transition-transform duration-500 ease-out"></div>
+        </button>
+    </div>
+
+    {mensaje && (
+      <div className="mt-6 p-4 rounded-xl bg-[#1e293b]/60 border border-[#F2A931]/30 backdrop-blur-md">
+        <p className="text-sm font-bold text-[#F2A931] animate-[pulse_2s_ease-in-out_infinite] text-center tracking-wide">
+          {mensaje}
+        </p>
+      </div>
+    )}
+  </form>
+);
 };
 
 export default FormularioCategoria;
