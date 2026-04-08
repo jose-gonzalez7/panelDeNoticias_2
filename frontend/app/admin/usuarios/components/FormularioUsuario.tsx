@@ -2,9 +2,10 @@
 
 import React, { useState } from "react";
 import { manejarError } from "@/app/utils/ManejarError";
-import { useRouter} from "next/navigation";
+import { useRouter } from "next/navigation";
+import { API_BASE } from "@/lib/api";
 
-const URL = "https://servidorpanelnoticias-production.up.railway.app/api/usuarios";
+const URL = `${API_BASE}/usuarios`;
 
 //Props que recibe el componente que actualiza la lista al crear un usuario
 interface Props {
@@ -69,7 +70,7 @@ const handleSubmit = async(e: React.FormEvent<HTMLFormElement>) => {
     });
 
     //Maneja errores HTTP
-    manejarError(crearRes, router);
+    await manejarError(crearRes, router);
 
     //Respuesta del servidor parseada a JSON
     const crearData = await crearRes.json();

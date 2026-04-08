@@ -1,8 +1,9 @@
 "use client";
 
 import React, { useState } from "react";
-import { manejarError } from '../../../utils/ManejarError';
+import { manejarError } from "../../../utils/ManejarError";
 import { useRouter } from "next/navigation";
+import { API_BASE } from "@/lib/api";
 
 /**
  * EliminarCategoria.tsx
@@ -15,7 +16,7 @@ import { useRouter } from "next/navigation";
  * - llamar manejarError(res, router) para redirigir a /error si la respuesta HTTP no es OK.
  */
 
-const URL = "https://servidorpanelnoticias-production.up.railway.app/api/categorias";
+const URL = `${API_BASE}/categorias`;
 
 // Props que recibe el componente
 interface Props {
@@ -52,7 +53,7 @@ const EliminarCategoria: React.FC<Props> = ({ idCategoria, onEliminado }) => {
       });
 
       // Maneja errores HTTP
-      manejarError(res, router);
+      await manejarError(res, router);
 
       // Obtiene el resultado
       const result = await res.json();

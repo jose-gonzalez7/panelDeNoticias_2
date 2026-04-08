@@ -1,7 +1,8 @@
-'use client';
+"use client";
 import { useState, useEffect } from "react";
 import Publicacion from "@/components/Publicacion";
 import { DiVim } from "react-icons/di";
+import { API_BASE } from "@/lib/api";
 
 type publicacion = {
   titulo: string;
@@ -12,7 +13,7 @@ type publicacion = {
   prioridad: string;
 };
 
-const URL = "https://servidorpanelnoticias-production.up.railway.app/api/publicaciones";
+const URL = `${API_BASE}/publicaciones`;
 
 async function mandarAapi(): Promise<publicacion[]> {
   try {

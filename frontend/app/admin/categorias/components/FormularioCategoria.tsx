@@ -1,8 +1,9 @@
 "use client";
 
 import React, { useState } from "react";
-import { manejarError } from '../../../utils/ManejarError';
+import { manejarError } from "../../../utils/ManejarError";
 import { useRouter } from "next/navigation";
+import { API_BASE } from "@/lib/api";
 
 /**
  * FormularioCategoria.tsx
@@ -14,7 +15,7 @@ import { useRouter } from "next/navigation";
  * - manejarError centraliza la redirección a /error si la respuesta HTTP no es OK.
  */
 
-const URL = "https://servidorpanelnoticias-production.up.railway.app/api/categorias";
+const URL = `${API_BASE}/categorias`;
 
 // Props que recibe el componente
 interface Props {
@@ -72,7 +73,7 @@ const FormularioCategoria: React.FC<Props> = ({ onCreado }) => {
       });
 
       // Manejo de errores HTTP
-      manejarError(crearRes, router);
+      await manejarError(crearRes, router);
 
       if (crearRes.ok) {
 

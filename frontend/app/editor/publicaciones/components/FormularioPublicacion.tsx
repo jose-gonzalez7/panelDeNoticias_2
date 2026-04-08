@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { manejarError } from "@/app/utils/ManejarError";
 import { useRouter } from "next/navigation";
+import { API_BASE } from "@/lib/api";
 
 /*
   FormularioPublicacion.tsx
@@ -12,7 +13,10 @@ import { useRouter } from "next/navigation";
   - manejarError se encarga de redirigir en caso de respuestas HTTP no autorizadas/u otros errores.
 */
 
-const URL = "https://servidorpanelnoticias-production.up.railway.app/api/publicaciones";
+const URL = `${API_BASE}/publicaciones`;
+const URL_CATEGORIAS = `${API_BASE}/categorias`;
+
+type Categoria = { id_categoria: string; nombre: string };
 
 // Props que recibe el componente para actualizar la lista al crear un componente
 interface Props {
@@ -41,6 +45,37 @@ const FormularioPublicacion: React.FC<Props> = ({ onCreado }) => {
   const router = useRouter();
 
   const [mensaje, setMensaje] = useState(""); // Mensaje de resultado
+  const [categorias, setCategorias] = useState<Categoria[]>([]);
+  const [cargandoCategorias, setCargandoCategorias] = useState(true);
+
+  useEffect(() => {
+    let cancel = false;
+    (async () => {
+      try {
+        const res = await fetch(URL_CATEGORIAS, {
+          method: "GET",
+          credentials: "include",
+        });
+        if (res.status === 401 || res.status === 403) {
+          manejarError(res, router);
+          return;
+        }
+        const data = await res.json();
+        if (!cancel && Array.isArray(data)) {
+          setCategorias(data);
+        }
+      } catch {
+        if (!cancel) {
+          setMensaje("No se pudieron cargar las categorías. Recarga la página.");
+        }
+      } finally {
+        if (!cancel) setCargandoCategorias(false);
+      }
+    })();
+    return () => {
+      cancel = true;
+    };
+  }, [router]);
 
   // Función que maneja los cambios en los campos del formulario
   const handleChange = (
@@ -75,10 +110,10 @@ const FormularioPublicacion: React.FC<Props> = ({ onCreado }) => {
 
       });
 
-      // Maneja errores HTTP
-      manejarError(crearRes, router);
+      if (crearRes.status === 401 || crearRes.status === 403) {
+        manejarError(crearRes, router);
+      }
 
-      // Respuesta del servidor parseada a JSON
       const crearData = await crearRes.json();
 
       if (crearRes.ok) { // Éxito: notificar, limpiar formulario y llamar callback si existe
@@ -100,14 +135,14 @@ const FormularioPublicacion: React.FC<Props> = ({ onCreado }) => {
 
       } else {
 
-        //Muestra mensaje de error
-        setMensaje(crearData.message || "Error al crear publicación.");
+        setMensaje(
+          crearData.error || crearData.message || "Error al crear publicación."
+        );
       
       }
 
-    } catch (error) {
+    } catch {
 
-      //Error de red u otros
       setMensaje("Error de conexión con el servidor.");
     
     }
@@ -131,8 +166,38 @@ const FormularioPublicacion: React.FC<Props> = ({ onCreado }) => {
             </div>
 
             <div className="flex flex-col space-y-2 group">
-                <label htmlFor="id_categoria" className="block text-[11px] font-bold uppercase tracking-widest text-slate-400 group-focus-within:text-[#F2A931] transition-colors duration-300 ml-1">ID Categoría</label>
-                <input type="text" id="id_categoria" name="id_categoria" value={formData.id_categoria} onChange={handleChange} required className="w-full rounded-2xl border border-white/10 bg-[#1e293b]/30 px-5 py-4 text-sm text-white shadow-inner transition-all hover:bg-white/5 focus:border-[#F2A931]/50 focus:bg-[#1e293b]/50 focus:outline-none focus:ring-1 focus:ring-[#F2A931]/60 placeholder:text-slate-600"/>
+                <label htmlFor="id_categoria" className="block text-[11px] font-bold uppercase tracking-widest text-slate-400 group-focus-within:text-[#F2A931] transition-colors duration-300 ml-1">Categoría</label>
+                <div className="relative">
+                    <select
+                        id="id_categoria"
+                        name="id_categoria"
+                        value={formData.id_categoria}
+                        onChange={handleChange}
+                        required
+                        disabled={cargandoCategorias || categorias.length === 0}
+                        className="w-full rounded-2xl border border-white/10 bg-[#1e293b]/30 px-5 py-4 text-sm text-white shadow-inner transition-all hover:bg-white/5 focus:border-[#F2A931]/50 focus:bg-[#1e293b]/50 focus:outline-none focus:ring-1 focus:ring-[#F2A931]/60 appearance-none cursor-pointer disabled:opacity-50"
+                    >
+                        <option value="" className="bg-[#1e293b] text-slate-500">
+                            {cargandoCategorias
+                              ? "Cargando categorías…"
+                              : categorias.length === 0
+                                ? "No hay categorías (créalas en Administración)"
+                                : "Seleccione una categoría"}
+                        </option>
+                        {categorias.map((c) => (
+                            <option
+                                key={c.id_categoria}
+                                value={c.id_categoria}
+                                className="bg-[#1e293b] text-white"
+                            >
+                                {c.nombre} ({c.id_categoria})
+                            </option>
+                        ))}
+                    </select>
+                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-5 text-slate-400">
+                        <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                    </div>
+                </div>
             </div>
             
             <div className="flex flex-col space-y-2 group md:col-span-2">

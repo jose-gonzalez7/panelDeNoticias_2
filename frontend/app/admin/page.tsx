@@ -2,7 +2,8 @@
 
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { manejarError } from "../utils/ManejarError";
+import { buildErrorUrl, manejarError } from "../utils/ManejarError";
+import { API_BASE } from "@/lib/api";
 
 /*
   Página principal del área "admin".
@@ -11,8 +12,8 @@ import { manejarError } from "../utils/ManejarError";
   - manejarError centraliza redirecciones a /error cuando la respuesta HTTP no es OK.
 */
 
-const URL_USUARIOS = "https://servidorpanelnoticias-production.up.railway.app/api/usuarios/admin";
-const URL_CATEGORIAS = "https://servidorpanelnoticias-production.up.railway.app/api/categorias";
+const URL_USUARIOS = `${API_BASE}/usuarios/admin`;
+const URL_CATEGORIAS = `${API_BASE}/categorias`;
 
 const Dashboard = () => {
 
@@ -36,7 +37,7 @@ const Dashboard = () => {
       });
 
       // Manejar errores HTTP
-      manejarError(resUsuarios, router);
+      await manejarError(resUsuarios, router);
 
       // Normalizar distintas formas de respuesta (users, usuarios o array directo)
       const dataUsuarios = await resUsuarios.json();
@@ -52,7 +53,7 @@ const Dashboard = () => {
       });
 
       // Manejar errores HTTP
-      manejarError(resCategorias, router);
+      await manejarError(resCategorias, router);
 
       const dataCategorias = await resCategorias.json();
       const listaCategorias = dataCategorias.categorias || dataCategorias || [];
@@ -69,7 +70,7 @@ const Dashboard = () => {
 
     } catch (error) {
 
-      router.push("/error?code=network");
+      router.push(buildErrorUrl("network", "No se pudo conectar con el servidor."));
 
     }
   };

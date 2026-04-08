@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { manejarError } from "@/app/utils/ManejarError";
 import { useRouter } from "next/navigation";
+import { API_BASE } from "@/lib/api";
 
 /*
   Componente: EliminarPublicacion
@@ -12,7 +13,7 @@ import { useRouter } from "next/navigation";
   - manejarError gestionará redirecciones si la respuesta indica falta de permiso/autenticación.
 */
 
-const URL = "https://servidorpanelnoticias-production.up.railway.app/api/publicaciones";
+const URL = `${API_BASE}/publicaciones`;
 
 // Props que recibe el componente
 interface Props {
@@ -59,7 +60,7 @@ const EliminarPublicacion: React.FC<Props> = ({ idPublicacion, onEliminado }) =>
       });
 
       // Manejo centralizado de errores
-      manejarError(res, router);
+      await manejarError(res, router);
 
       // Cutrada para manejar respuestas sin JSON
       let result = null;

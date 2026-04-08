@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { manejarError } from "@/app/utils/ManejarError";
 import { useRouter } from "next/navigation";
+import { API_BASE } from "@/lib/api";
 
 /**
  * FormularioModificarPublicacion.tsx
@@ -14,7 +15,7 @@ import { useRouter } from "next/navigation";
  * - manejarError se encarga de redirigir a /error si la respuesta HTTP no es OK.
  */
 
-const URL = "https://servidorpanelnoticias-production.up.railway.app/api/publicaciones";
+const URL = `${API_BASE}/publicaciones`;
 
 // Props que recibe el componente
 interface Props {
@@ -65,7 +66,7 @@ const FormularioModificarPublicacion: React.FC<Props> = ({
       });
 
       // Manejo de errores HTTP
-      manejarError(response, router);
+      await manejarError(response, router);
 
       // Obtiene el resultado y lo parsea a JSON
       const result = await response.json();

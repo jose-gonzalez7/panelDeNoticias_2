@@ -6,6 +6,7 @@ import FormularioModificarPublicacion from "./FormularioModificarPublicacion";
 import FormularioPublicacion from "./FormularioPublicacion";
 import { manejarError } from "@/app/utils/ManejarError";
 import { useRouter } from "next/navigation";
+import { API_BASE, API_ORIGIN } from "@/lib/api";
 
 /*
   ListaPublicaciones.tsx
@@ -14,7 +15,7 @@ import { useRouter } from "next/navigation";
   - manejarError redirige a /error si la respuesta HTTP no es OK.
 */
 
-const URL = "https://servidorpanelnoticias-production.up.railway.app/api/publicaciones";
+const URL = `${API_BASE}/publicaciones`;
 
 // Interfaz de la estructura de la publicación
 interface Publicacion {
@@ -76,7 +77,7 @@ const ListaPublicaciones = () => {
       });
 
       // Maneja errores HTTP
-      manejarError(res, router);
+      await manejarError(res, router);
 
       // Obtiene las publicaciones y las cambia a json
       const data = await res.json();
@@ -185,7 +186,7 @@ const ListaPublicaciones = () => {
                                 <td className="px-5 py-4">
                                 {pub.adjuntos ? (
                                     <a
-                                    href={`https://servidorpanelnoticias-production.up.railway.app/uploads/${pub.adjuntos}`}
+                                    href={`${API_ORIGIN}/uploads/${pub.adjuntos}`}
                                     target="_blank"
                                     className="text-[#F2A931] hover:underline hover:text-white transition-colors text-xs font-bold"
                                     >

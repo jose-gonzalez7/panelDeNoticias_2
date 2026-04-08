@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { manejarError } from "@/app/utils/ManejarError";
 import { useRouter } from "next/navigation";
+import { API_BASE } from "@/lib/api";
 
 /*
   EliminarUsuarios.tsx
@@ -13,7 +14,7 @@ import { useRouter } from "next/navigation";
   - manejarError gestiona redirecciones a /error si la respuesta HTTP no es OK.
 */
 
-const URL = "https://servidorpanelnoticias-production.up.railway.app/api/usuarios";
+const URL = `${API_BASE}/usuarios`;
 
 //Props que recibe el componente
 interface Props{
@@ -52,7 +53,7 @@ const EliminarUsuarios: React.FC<Props> = ({email, onEliminado }) => {
             });
 
             //Maneja errores HTTP
-            manejarError(res, router);
+            await manejarError(res, router);
 
             //Obtiene el resultado y lo parsea a JSON
             const result = await res.json();

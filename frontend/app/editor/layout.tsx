@@ -1,6 +1,5 @@
-import React, { FC, PropsWithChildren } from 'react';
+import React, { FC, PropsWithChildren } from "react";
 import SideNav from "./components/SideNav";
-import "../ui/globals.css";
 
 const DashboardLayout: FC<PropsWithChildren> = ({children}) => {
     return (

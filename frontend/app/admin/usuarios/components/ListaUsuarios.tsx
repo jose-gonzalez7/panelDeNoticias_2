@@ -6,8 +6,9 @@ import FormularioModificarUsuario from "./FormularioModificarUsuario";
 import FormularioUsuario from "./FormularioUsuario";
 import { manejarError } from "@/app/utils/ManejarError";
 import { useRouter } from "next/navigation";
+import { API_BASE } from "@/lib/api";
 
-const URL = "https://servidorpanelnoticias-production.up.railway.app/api/usuarios/admin";
+const URL = `${API_BASE}/usuarios/admin`;
 
 //Interfaz de la estructura del usuario
 interface Usuario {
@@ -54,7 +55,7 @@ const fetchUsuarios = async () => {
         });
 
         //Manejo de errores HTTP
-        manejarError(res, router);
+        await manejarError(res, router);
 
         const data = await res.json();
 
@@ -129,8 +130,11 @@ return (
                             </thead>
 
                             <tbody className="divide-y divide-white/5">
-                                {usuarios.map((usuario) => (
-                                    <tr key={usuario.id} className="text-sm hover:bg-[#1e293b]/30 transition-colors">
+                                {usuarios.map((usuario, index) => (
+                                    <tr
+                                        key={usuario.email || `usuario-${usuario.id}-${index}`}
+                                        className="text-sm hover:bg-[#1e293b]/30 transition-colors"
+                                    >
                                         <td className="px-6 py-5 font-semibold text-gray-200 whitespace-nowrap">{usuario.nombre}</td>
                                         <td className="px-6 py-5 font-mono text-slate-400 whitespace-nowrap">{usuario.email}</td>
                                         <td className="px-6 py-5">

@@ -4,8 +4,9 @@ import React, { useEffect, useState } from "react";
 import EliminarCategoria from "./EliminarCategoria";
 import FormularioModificarCategoria from "./FormularioModificarCategoria";
 import FormularioCategoria from "./FormularioCategoria";
-import { manejarError } from '../../../utils/ManejarError';
+import { manejarError } from "../../../utils/ManejarError";
 import { useRouter } from "next/navigation";
+import { API_BASE } from "@/lib/api";
 
 /*
   ListaCategorias.tsx
@@ -15,7 +16,7 @@ import { useRouter } from "next/navigation";
   - manejarError centraliza la redirección a /error cuando la respuesta HTTP no es OK.
 */
 
-const URL = "https://servidorpanelnoticias-production.up.railway.app/api/categorias";
+const URL = `${API_BASE}/categorias`;
 
 // Interfaz de la estructura de la categoría
 interface Categoria {
@@ -57,7 +58,7 @@ const ListaCategorias = () => {
         });
 
         // Manejo de errores HTTP
-        manejarError(res, router);
+        await manejarError(res, router);
 
       // Obtiene las categorías y las parsea a JSON
       const data = await res.json();

@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { manejarError } from "@/app/utils/ManejarError";
+import { API_BASE } from "@/lib/api";
 
 /*
   Página del dashboard para el rol "editor".
@@ -11,7 +12,34 @@ import { manejarError } from "@/app/utils/ManejarError";
   - manejarError hace redirect si la respuesta indica problema de autenticación/permiso.
 */
 
-const URL_PUBLICACIONES = "https://servidorpanelnoticias-production.up.railway.app/api/publicaciones";
+const URL_PUBLICACIONES = `${API_BASE}/publicaciones`;
+const URL_ACTIVIDAD_PANEL = `${API_BASE}/publicaciones/actividad-reciente-panel`;
+
+type ActividadItem = {
+  id_actividad: string;
+  id_usuario: string;
+  nombre_usuario: string;
+  actividad: string;
+  fecha: string;
+};
+
+function formatRelativeTimeEs(iso: string): string {
+  const date = new Date(iso);
+  const now = new Date();
+  const diffSec = Math.round((now.getTime() - date.getTime()) / 1000);
+  if (diffSec < 0) {
+    return date.toLocaleString("es-ES", { dateStyle: "short", timeStyle: "short" });
+  }
+  const rtf = new Intl.RelativeTimeFormat("es", { numeric: "auto" });
+  if (diffSec < 60) return rtf.format(-Math.max(diffSec, 1), "second");
+  const diffMin = Math.round(diffSec / 60);
+  if (diffMin < 60) return rtf.format(-diffMin, "minute");
+  const diffHour = Math.round(diffMin / 60);
+  if (diffHour < 24) return rtf.format(-diffHour, "hour");
+  const diffDay = Math.round(diffHour / 24);
+  if (diffDay < 7) return rtf.format(-diffDay, "day");
+  return date.toLocaleString("es-ES", { dateStyle: "short", timeStyle: "short" });
+}
 
 const Dashboard = () => {
 
@@ -20,48 +48,71 @@ const Dashboard = () => {
   // Estado: total de publicaciones (null mientras no se carga) y mensaje de error
   const [totalPublicaciones, setTotalPublicaciones] = useState<number | null>(null);
   const [error, setError] = useState("");
+  const [actividades, setActividades] = useState<ActividadItem[] | null>(null);
+  const [errorActividad, setErrorActividad] = useState("");
 
-  // Función que solicita la lista de publicaciones al backend
-  const cargarPublicaciones = async () => {
+  useEffect(() => {
+    let cancelled = false;
 
-    try {
+    async function cargarDashboard() {
+      setError("");
+      setErrorActividad("");
+      setActividades(null);
 
-      const res = await fetch(URL_PUBLICACIONES, {
-
-        method: "GET",
-        credentials: "include", // enviar cookies
-
-      });
-
-      // Manejo centralizado de errores/respuestas
-      manejarError(res, router);
-
-      const data = await res.json();
-
-      // El backend puede devolver directamente un array o envolver en 'publicaciones'
-      const lista = data.publicaciones || data || [];
-
-      if (res.ok && Array.isArray(lista)) {
-
-        setTotalPublicaciones(lista.length); // Guardar cantidad de publicaciones
-
-      } else {
-
-        setError("Error al obtener publicaciones.");
-
+      try {
+        const res = await fetch(URL_PUBLICACIONES, {
+          method: "GET",
+          credentials: "include",
+        });
+        await manejarError(res, router);
+        const data = await res.json();
+        const lista = data.publicaciones || data || [];
+        if (!cancelled && res.ok && Array.isArray(lista)) {
+          setTotalPublicaciones(lista.length);
+        } else if (!cancelled) {
+          setError("Error al obtener publicaciones.");
+        }
+      } catch {
+        if (!cancelled) {
+          setError("Error de conexión con el servidor.");
+        }
       }
-    } catch (err) { // Error de red u otros
 
-      setError("Error de conexión con el servidor.");
-
+      try {
+        const res = await fetch(`${URL_ACTIVIDAD_PANEL}?limite=15`, {
+          method: "GET",
+          credentials: "include",
+        });
+        if (res.status === 404) {
+          if (!cancelled) {
+            setErrorActividad(
+              "El servidor aún no expone actividad reciente. Despliega la última versión del backend."
+            );
+            setActividades([]);
+          }
+          return;
+        }
+        await manejarError(res, router);
+        const data = await res.json();
+        if (!cancelled && res.ok && Array.isArray(data)) {
+          setActividades(data);
+        } else if (!cancelled) {
+          setErrorActividad("No se pudo cargar la actividad reciente.");
+          setActividades([]);
+        }
+      } catch {
+        if (!cancelled) {
+          setErrorActividad("Error de conexión al cargar actividad.");
+          setActividades([]);
+        }
+      }
     }
 
-  };
-
-  useEffect(() => { // Al montar el componente, cargar publicaciones
-    cargarPublicaciones();
-
-  }, []);
+    void cargarDashboard();
+    return () => {
+      cancelled = true;
+    };
+  }, [router]);
 
   // Parte visible
 
@@ -122,27 +173,38 @@ const Dashboard = () => {
             Actividad Reciente
           </h2>
 
+          {errorActividad && (
+            <div className="mb-4 p-4 rounded-2xl bg-red-900/20 border border-red-500/20 text-red-200 text-sm">
+              {errorActividad}
+            </div>
+          )}
+
           <div className="space-y-4">
-            <div className="rounded-2xl border border-white/5 bg-[#1e293b]/30 backdrop-blur-md p-5 shadow-lg group hover:bg-[#1e293b]/50 transition-colors">
-              <p className="text-sm text-slate-300">
-                <span className="font-bold text-white">Roberto</span> añadió una publicación.
-              </p>
-              <p className="text-[11px] font-bold text-[#F2A931] uppercase tracking-widest mt-2">Hace 2 minutos</p>
-            </div>
-
-            <div className="rounded-2xl border border-white/5 bg-[#1e293b]/30 backdrop-blur-md p-5 shadow-lg group hover:bg-[#1e293b]/50 transition-colors">
-              <p className="text-sm text-slate-300">
-                Se actualizaron las <span className="font-bold text-white">publicaciones</span> del sistema.
-              </p>
-              <p className="text-[11px] font-bold text-[#F2A931] uppercase tracking-widest mt-2">Hace 10 minutos</p>
-            </div>
-
-            <div className="rounded-2xl border border-white/5 bg-[#1e293b]/30 backdrop-blur-md p-5 shadow-lg group hover:bg-[#1e293b]/50 transition-colors">
-              <p className="text-sm text-slate-300">
-                <span className="font-bold text-white">Roberto</span> eliminó una publicación.
-              </p>
-              <p className="text-[11px] font-bold text-[#F2A931] uppercase tracking-widest mt-2">Hoy a las 11:45</p>
-            </div>
+            {actividades === null && !errorActividad && (
+              <div className="rounded-2xl border border-white/5 bg-[#1e293b]/30 backdrop-blur-md p-5 text-slate-400 text-sm">
+                Cargando actividad…
+              </div>
+            )}
+            {actividades !== null && actividades.length === 0 && !errorActividad && (
+              <div className="rounded-2xl border border-white/5 bg-[#1e293b]/30 backdrop-blur-md p-5 text-slate-400 text-sm">
+                Aún no hay actividad registrada en el sistema.
+              </div>
+            )}
+            {actividades?.map((item) => (
+              <div
+                key={item.id_actividad}
+                className="rounded-2xl border border-white/5 bg-[#1e293b]/30 backdrop-blur-md p-5 shadow-lg group hover:bg-[#1e293b]/50 transition-colors"
+              >
+                <p className="text-sm text-slate-300">
+                  <span className="font-bold text-white">{item.nombre_usuario}</span>
+                  <span className="text-slate-400"> — </span>
+                  <span>{item.actividad}</span>
+                </p>
+                <p className="text-[11px] font-bold text-[#F2A931] uppercase tracking-widest mt-2">
+                  {formatRelativeTimeEs(item.fecha)}
+                </p>
+              </div>
+            ))}
           </div>
         </div>
       </main>

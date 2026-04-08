@@ -1,8 +1,10 @@
-'use client';
+"use client";
 import React from "react";
 import { useRouter } from "next/navigation";
+import { buildErrorUrl, mensajeDesdeCuerpoRespuesta } from "@/app/utils/ManejarError";
+import { API_BASE } from "@/lib/api";
 
-const URL = "https://servidorpanelnoticias-production.up.railway.app/api/login";
+const URL = `${API_BASE}/login`;
 
 async function mandarAapi(mail:String, password:String, router: any) {
     try {
@@ -24,7 +26,9 @@ async function mandarAapi(mail:String, password:String, router: any) {
 
         // Si la respuesta no es ok
         if (!response.ok) {
-            router.push("/error");
+            const texto = await response.text();
+            const detalle = mensajeDesdeCuerpoRespuesta(texto);
+            router.push(buildErrorUrl(response.status, detalle || undefined));
             return;
         }
 
@@ -49,15 +53,19 @@ async function mandarAapi(mail:String, password:String, router: any) {
                     break;
             
                 default:
-                    router.push("/error");
+                    router.push(buildErrorUrl("rol", "El rol de usuario no tiene acceso asignado en este panel."));
                     break;
             }   
         } else {
-            router.push("/error");
+            const detalle =
+                (typeof respuestajson?.message === "string" && respuestajson.message) ||
+                (typeof respuestajson?.error === "string" && respuestajson.error) ||
+                "";
+            router.push(buildErrorUrl("auth", detalle || "Credenciales incorrectas o sesión no válida."));
         }
     } catch (error) {
         // Captura cualquier error 
-        router.push("/error");
+        router.push(buildErrorUrl("network", "No se pudo conectar con el servidor."));
     }
 }
 
