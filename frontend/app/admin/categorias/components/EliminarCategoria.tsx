@@ -1,8 +1,9 @@
 "use client";
 
 import React, { useState } from "react";
-import { manejarError } from '../../../utils/ManejarError';
+import { manejarError } from "../../../utils/ManejarError";
 import { useRouter } from "next/navigation";
+import { API_BASE } from "@/lib/api";
 
 /**
  * EliminarCategoria.tsx
@@ -15,7 +16,7 @@ import { useRouter } from "next/navigation";
  * - llamar manejarError(res, router) para redirigir a /error si la respuesta HTTP no es OK.
  */
 
-const URL = "https://servidorpanelnoticias-production.up.railway.app/api/categorias";
+const URL = `${API_BASE}/categorias`;
 
 // Props que recibe el componente
 interface Props {
@@ -52,7 +53,7 @@ const EliminarCategoria: React.FC<Props> = ({ idCategoria, onEliminado }) => {
       });
 
       // Maneja errores HTTP
-      manejarError(res, router);
+      await manejarError(res, router);
 
       // Obtiene el resultado
       const result = await res.json();
@@ -83,34 +84,34 @@ const EliminarCategoria: React.FC<Props> = ({ idCategoria, onEliminado }) => {
   //Parte visible
 
   return (
-    <div className="space-y-6 text-center">
+    <div className="space-y-4 text-center">
       {!confirmado ? (
         <button
           onClick={() => setConfirmado(true)}
-          className="w-full rounded-2xl bg-red-600/20 border border-red-500/50 px-6 py-4 text-red-400 font-bold uppercase tracking-widest text-[11px] hover:bg-red-600 hover:text-white transition-all shadow-lg"
+          className="w-full rounded-md bg-red-50 border border-red-200 px-4 py-2 text-red-600 font-medium hover:bg-red-100 hover:text-red-700 transition-colors cursor-pointer"
         >
           Confirmar Eliminación
         </button>
       ) : (
-        <div className="space-y-4 text-left">
-          <span className="block text-sm font-bold text-white mb-4 text-center">¿Estás completamente seguro? Esta acción es irreversible.</span>
-          <div className="flex gap-4 justify-center">
+        <div className="space-y-3 text-left">
+          <span className="block text-sm font-medium text-[#0F172A] text-center">¿Estás completamente seguro? Esta acción es irreversible.</span>
+          <div className="flex gap-3 justify-center">
              <button
                 onClick={handleEliminar}
-                className="flex-1 rounded-2xl bg-red-600 px-6 py-4 text-white font-bold uppercase tracking-widest text-[11px] hover:bg-red-700 transition-all shadow-[0_0_20px_rgba(220,38,38,0.4)]"
+                className="flex-1 rounded-md bg-[#EF4444] px-4 py-2 text-white font-medium hover:bg-red-600 transition-colors cursor-pointer"
              >
                 Sí, Eliminar
              </button>
              <button
                 onClick={() => setConfirmado(false)}
-                className="flex-1 rounded-2xl bg-[#1e293b]/50 border border-white/10 px-6 py-4 text-slate-300 font-bold uppercase tracking-widest text-[11px] hover:bg-white/10 transition-all"
+                className="flex-1 rounded-md bg-white border border-gray-300 px-4 py-2 text-[#64748B] font-medium hover:bg-gray-50 transition-colors cursor-pointer"
              >
                 No, Mantener
              </button>
           </div>
         </div>
       )}
-      {mensaje && <p className="text-sm font-bold text-[#F2A931] mt-4">{mensaje}</p>}
+      {mensaje && <p className="text-sm font-medium text-[#EF4444] mt-2">{mensaje}</p>}
     </div>
   );
 };

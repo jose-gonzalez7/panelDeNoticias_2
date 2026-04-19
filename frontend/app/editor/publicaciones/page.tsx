@@ -3,11 +3,13 @@ import ListaPublicaciones from './components/ListaPublicaciones';
 
 const Publicaciones = () => {
     return (
-        <div className="max-w-7xl mx-auto space-y-12">
-            <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight text-white leading-tight relative inline-block mb-10">
-                PUBLICACIONES<span className="text-[#F2A931]">.</span>
-                <div className="absolute -bottom-4 left-0 w-1/3 h-1 bg-gradient-to-r from-[#F2A931] to-transparent"></div>
-            </h1>
+        <div className="min-h-full p-6 md:p-12">
+            <div className="mb-10">
+                <span className="text-[#1E3A8A] text-sm font-semibold uppercase mb-2 block">Panel de Editor</span>
+                <h1 className="text-4xl text-[#0F172A] font-bold leading-tight">
+                    Publicaciones<span className="text-[#F59E0B]">.</span>
+                </h1>
+            </div>
             <ListaPublicaciones/>
         </div>
     );

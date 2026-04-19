@@ -6,6 +6,7 @@ import FormularioModificarPublicacion from "./FormularioModificarPublicacion";
 import FormularioPublicacion from "./FormularioPublicacion";
 import { manejarError } from "@/app/utils/ManejarError";
 import { useRouter } from "next/navigation";
+import { API_BASE, API_ORIGIN } from "@/lib/api";
 
 /*
   ListaPublicaciones.tsx
@@ -14,7 +15,7 @@ import { useRouter } from "next/navigation";
   - manejarError redirige a /error si la respuesta HTTP no es OK.
 */
 
-const URL = "https://servidorpanelnoticias-production.up.railway.app/api/publicaciones";
+const URL = `${API_BASE}/publicaciones`;
 
 // Interfaz de la estructura de la publicación
 interface Publicacion {
@@ -76,7 +77,7 @@ const ListaPublicaciones = () => {
       });
 
       // Maneja errores HTTP
-      manejarError(res, router);
+      await manejarError(res, router);
 
       // Obtiene las publicaciones y las cambia a json
       const data = await res.json();
@@ -127,85 +128,82 @@ const ListaPublicaciones = () => {
   return (
     <div className="w-full z-10 space-y-12">
 
-      <FormularioPublicacion onCreado={fetchPublicaciones} />
+      <FormularioPublicacion publicaciones={publicaciones} onCreado={fetchPublicaciones} />
 
       <div>
-        <h2 className="text-xl md:text-2xl font-bold mb-6 text-white tracking-tight flex items-center">
-            <span className="w-1.5 h-6 bg-[#F2A931] rounded-full mr-3 border border-white/20"></span>
+        <h2 className="text-xl md:text-2xl font-bold mb-6 text-[#0F172A] flex items-center">
             Lista de Publicaciones
         </h2>
 
-        {cargando && <p className="text-[#F2A931] animate-[pulse_1.5s_ease-in-out_infinite] font-semibold tracking-wide">Cargando publicaciones...</p>}
-        {error && <div className="p-5 rounded-[1.5rem] bg-red-900/30 border border-red-500/30 text-red-200 backdrop-blur-md shadow-lg font-medium">{error}</div>}
+        {cargando && <p className="text-[#3B82F6] font-semibold">Cargando publicaciones...</p>}
+        {error && <div className="p-4 rounded bg-red-100 border border-red-200 text-red-700 font-medium mb-4">{error}</div>}
 
         {!cargando && !error && (
-            <div className="relative group/table mb-10">
-                <div className="absolute -inset-1 bg-gradient-to-r from-[#1e293b] to-[#F2A931] rounded-[2rem] blur opacity-10 group-hover/table:opacity-20 transition-opacity duration-500"></div>
-                <div className="overflow-x-auto rounded-[2rem] border border-white/5 shadow-[0_8px_32px_0_rgba(0,0,0,0.3)] bg-[#0a0f1a]/60 backdrop-blur-2xl relative z-10">
-                    <div className="absolute top-0 left-0 w-32 h-32 bg-[#F2A931]/5 rounded-full blur-2xl pointer-events-none"></div>
-                    <table className="w-full min-w-[800px] table-auto border-collapse relative z-10">
-                        <thead>
-                            <tr className="bg-[#1e293b]/40 text-left text-[11px] uppercase tracking-[0.2em] text-slate-400 border-b border-white/5">
-                            <th className="px-5 py-4 font-bold">ID</th>
-                            <th className="px-5 py-4 font-bold">Título</th>
-                            <th className="px-5 py-4 font-bold">Cuerpo</th>
-                            <th className="px-5 py-4 font-bold">Categoría</th>
-                            <th className="px-5 py-4 font-bold">Fechas</th>
-                            <th className="px-5 py-4 font-bold">Prioridad</th>
-                            <th className="px-5 py-4 font-bold">Etiquetas</th>
-                            <th className="px-5 py-4 font-bold">Adjuntos</th>
-                            <th className="px-5 py-4 font-bold text-center">Acciones</th>
+            <div className="mb-10 w-full overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm">
+                <div className="overflow-x-auto w-full">
+                    <table className="w-full min-w-[800px] text-sm text-left table-auto">
+                        <thead className="bg-[#F8FAFC] text-[#64748B] font-semibold uppercase tracking-wider text-xs border-b border-gray-200">
+                            <tr>
+                                <th className="px-6 py-4">ID</th>
+                                <th className="px-6 py-4">Título</th>
+                                <th className="px-6 py-4">Cuerpo</th>
+                                <th className="px-6 py-4">Categoría</th>
+                                <th className="px-6 py-4">Fechas</th>
+                                <th className="px-6 py-4">Prioridad</th>
+                                <th className="px-6 py-4">Etiquetas</th>
+                                <th className="px-6 py-4">Adjuntos</th>
+                                <th className="px-6 py-4 text-center">Acciones</th>
                             </tr>
                         </thead>
 
-                        <tbody className="divide-y divide-white/5">
+                        <tbody className="divide-y divide-gray-200">
                             {publicaciones.map((pub) => (
                             <tr
                                 key={pub.id_publicacion}
-                                className="text-sm hover:bg-[#1e293b]/30 transition-colors"
+                                className="hover:bg-gray-50 transition-colors text-[#0F172A]"
                             >
-                                <td className="px-5 py-4 font-mono text-slate-400 whitespace-nowrap">{pub.id_publicacion}</td>
-                                <td className="px-5 py-4 font-semibold text-gray-200 whitespace-nowrap">{pub.titulo}</td>
-                                <td className="px-5 py-4 text-slate-400 truncate max-w-xs">{pub.cuerpo}</td>
-                                <td className="px-5 py-4 text-slate-400">{pub.id_categoria}</td>
-                                <td className="px-5 py-4 text-slate-400 whitespace-nowrap">
+                                <td className="px-6 py-4 font-mono text-[#64748B] whitespace-nowrap">{pub.id_publicacion}</td>
+                                <td className="px-6 py-4 font-semibold whitespace-nowrap">{pub.titulo}</td>
+                                <td className="px-6 py-4 text-[#64748B] truncate max-w-xs">{pub.cuerpo}</td>
+                                <td className="px-6 py-4 text-[#64748B]">{pub.id_categoria}</td>
+                                <td className="px-6 py-4 text-[#64748B] whitespace-nowrap">
                                   {formatearFecha(pub.fecha_inicio)}<br/>
-                                  <span className="text-xs text-slate-500">- {formatearFecha(pub.fecha_fin)}</span>
+                                  <span className="text-xs text-gray-500">- {formatearFecha(pub.fecha_fin)}</span>
                                 </td>
-                                <td className="px-5 py-4">
-                                  <span className="px-3 py-1.5 rounded-full bg-[#1e293b] border border-white/10 text-[#F2A931] text-[10px] font-bold uppercase tracking-widest shadow-inner">
+                                <td className="px-6 py-4">
+                                  <span className="px-2 py-1 rounded text-xs font-semibold bg-gray-100 text-[#0F172A]">
                                     {pub.prioridad}
                                   </span>
                                 </td>
-                                <td className="px-5 py-4 text-slate-400">
+                                <td className="px-6 py-4 text-[#64748B]">
                                   {pub.etiquetas?.split(',').map((tag, i) => (
-                                      <span key={i} className="inline-block px-2 py-1 bg-white/5 rounded text-[10px] text-slate-300 mr-1 mb-1 border border-white/5">{tag.trim()}</span>
+                                      <span key={i} className="inline-block px-2 py-1 bg-gray-100 rounded text-xs text-[#0F172A] mr-1 mb-1 border border-gray-200">{tag.trim()}</span>
                                   ))}
                                 </td>
-                                <td className="px-5 py-4">
+                                <td className="px-6 py-4">
                                 {pub.adjuntos ? (
                                     <a
-                                    href={`https://servidorpanelnoticias-production.up.railway.app/uploads/${pub.adjuntos}`}
+                                    href={`${API_ORIGIN}/uploads/${pub.adjuntos}`}
                                     target="_blank"
-                                    className="text-[#F2A931] hover:underline hover:text-white transition-colors text-xs font-bold"
+                                    className="text-[#3B82F6] hover:underline font-semibold whitespace-nowrap"
                                     >
                                     Ver archivo
                                     </a>
                                 ) : (
-                                    <span className="text-slate-600">—</span>
+                                    <span className="text-[#64748B]">—</span>
                                 )}
                                 </td>
 
-                                <td className="px-5 py-4 text-center">
+                                <td className="px-6 py-4 text-center">
                                     <div className="flex justify-center gap-4">
                                         <button
-                                            className="text-slate-400 font-bold hover:text-[#F2A931] transition-colors underline-offset-4 hover:underline whitespace-nowrap"
+                                            className="text-[#3B82F6] font-semibold hover:underline cursor-pointer"
                                             onClick={() => setPublicacionEditando(pub)}
                                         >
                                             Editar
                                         </button>
                                         <button
-                                            className="text-slate-500 font-bold hover:text-red-400 transition-colors underline-offset-4 hover:underline whitespace-nowrap"
+                                            className="text-[#EF4444] font-semibold hover:underline cursor-pointer"
                                             onClick={() => setPublicacionEliminando(pub)}
                                         >
                                             Eliminar
@@ -221,9 +219,8 @@ const ListaPublicaciones = () => {
       )}
 
       {publicacionEditando && (
-        <div className="mt-10 mb-10 relative">
-          <div className="absolute -inset-1 bg-gradient-to-r from-[#1e293b] to-blue-600/30 rounded-[2rem] blur opacity-15"></div>
-          <div className="p-8 rounded-[2rem] bg-[#0a0f1a]/80 border border-white/5 shadow-2xl backdrop-blur-2xl relative z-10">
+        <div className="mt-10 mb-10">
+          <div className="p-8 rounded-lg bg-white border border-gray-200 shadow-sm relative z-10">
             <FormularioModificarPublicacion
                 idPublicacion={publicacionEditando.id_publicacion}
                 tituloActual={publicacionEditando.titulo}
@@ -238,9 +235,8 @@ const ListaPublicaciones = () => {
       )}
 
       {publicacionEliminando && (
-        <div className="mt-10 mb-10 relative">
-          <div className="absolute -inset-1 bg-gradient-to-r from-red-600 to-[#F2A931] rounded-[2rem] blur opacity-15"></div>
-          <div className="p-8 rounded-[2rem] bg-[#0a0f1a]/80 border border-red-500/20 shadow-2xl backdrop-blur-2xl relative z-10">
+        <div className="mt-10 mb-10">
+          <div className="p-8 rounded-lg bg-white border border-red-200 shadow-sm relative z-10">
             <EliminarPublicacion
                 idPublicacion={publicacionEliminando.id_publicacion}
                 onEliminado={() => {
@@ -250,7 +246,7 @@ const ListaPublicaciones = () => {
             />
 
             <button
-                className="mt-6 w-full text-center py-4 border border-white/10 rounded-2xl bg-white/5 text-sm font-bold text-slate-300 hover:text-white hover:bg-white/10 hover:border-white/20 transition-all font-sans uppercase tracking-[0.1em]"
+                className="mt-4 w-full text-center py-2 border border-gray-300 rounded-md bg-white text-sm font-medium text-[#64748B] hover:bg-gray-50 transition-colors cursor-pointer"
                 onClick={() => setPublicacionEliminando(null)}
             >
                 Cancelar
