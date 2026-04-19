@@ -28,30 +28,27 @@ function ContenidoError() {
   const msg = searchParams.get("msg")?.trim() ?? "";
 
   return (
-    <div className="relative w-full max-w-lg">
-      <div className="absolute -inset-1 bg-gradient-to-r from-[#1e293b] to-[#F2A931] rounded-[2rem] blur opacity-20 transform -rotate-1 pointer-events-none" />
-      <div className="relative bg-[#0a0f1a]/70 backdrop-blur-2xl border border-white/10 rounded-[2rem] p-8 sm:p-10 shadow-[0_8px_32px_0_rgba(0,0,0,0.6)] overflow-hidden">
-        <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#F2A931] to-transparent opacity-50" />
-
-        <span className="text-[#F2A931] text-xs font-bold tracking-[0.2em] uppercase mb-3 block">
+    <div className="w-full max-w-lg">
+      <div className="bg-white border border-gray-200 rounded-lg p-8 sm:p-10 shadow-sm relative overflow-hidden">
+        <span className="text-[#1E3A8A] text-xs font-bold tracking-[0.2em] uppercase mb-3 block">
           Panel de noticias
         </span>
-        <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white leading-tight mb-2">
+        <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#0F172A] leading-tight mb-2">
           {tituloParaCodigo(code)}
         </h1>
-        <p className="text-slate-400 text-sm mb-6">
-          Código: <span className="text-slate-300 font-mono">{code}</span>
+        <p className="text-[#64748B] text-sm mb-6 font-medium">
+          Código: <span className="text-[#0F172A] font-mono">{code}</span>
         </p>
 
         {msg ? (
           <div
-            className="mb-8 p-5 rounded-2xl bg-red-900/25 border border-red-500/35 text-red-100/95 backdrop-blur-md text-sm leading-relaxed whitespace-pre-wrap break-words"
+            className="mb-8 p-4 rounded bg-red-50 border border-red-200 text-red-700 text-sm leading-relaxed whitespace-pre-wrap break-words font-medium"
             role="alert"
           >
             {msg}
           </div>
         ) : (
-          <p className="mb-8 text-slate-400 text-sm leading-relaxed">
+          <p className="mb-8 text-[#64748B] text-sm leading-relaxed font-medium">
             No hay un mensaje detallado del servidor. Puedes volver al inicio de sesión o intentar de
             nuevo la acción que falló.
           </p>
@@ -60,14 +57,14 @@ function ContenidoError() {
         <div className="flex flex-col sm:flex-row gap-3">
           <Link
             href="/login"
-            className="inline-flex justify-center items-center rounded-2xl bg-[#F2A931] px-6 py-3.5 text-[#0a0f1a] font-bold tracking-wide shadow-[0_0_20px_rgba(242,169,49,0.15)] transition-all duration-300 hover:shadow-[0_0_30px_rgba(242,169,49,0.3)] hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-[#F2A931] focus:ring-offset-2 focus:ring-offset-[#0a0f1a]"
+            className="inline-flex justify-center items-center rounded-md bg-[#1E3A8A] px-6 py-2.5 text-white font-medium transition-colors hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-[#1E3A8A] focus:ring-offset-2"
           >
             Ir al inicio de sesión
           </Link>
           <button
             type="button"
             onClick={() => router.back()}
-            className="inline-flex justify-center items-center rounded-2xl border border-white/15 bg-white/5 px-6 py-3.5 text-white font-semibold tracking-wide transition-all duration-300 hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-white/20"
+            className="inline-flex justify-center items-center rounded-md border border-gray-300 bg-white px-6 py-2.5 text-[#64748B] font-medium transition-colors hover:bg-gray-50 focus:outline-none cursor-pointer"
           >
             Volver
           </button>
@@ -79,7 +76,7 @@ function ContenidoError() {
 
 function CargandoError() {
   return (
-    <div className="w-full max-w-lg rounded-[2rem] border border-white/10 bg-[#0a0f1a]/50 p-10 text-center text-slate-400">
+    <div className="w-full max-w-lg rounded-lg border border-gray-200 bg-white p-10 text-center text-[#64748B] font-medium shadow-sm">
       Cargando…
     </div>
   );

@@ -4,12 +4,11 @@ import ListaUsuarios from './components/ListaUsuarios';
 const Usuarios = () => {
 
     return (
-        <div className="min-h-full p-6 text-gray-100 font-sans relative">
-            <div className="mb-12">
-                <span className="text-[#F2A931] text-xs font-bold tracking-[0.2em] uppercase mb-4 block">Panel de Administración</span>
-                <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight text-white leading-tight relative inline-block">
-                    Usuarios<span className="text-[#F2A931]">.</span>
-                    <span className="absolute -bottom-2 left-0 w-1/3 h-[3px] bg-gradient-to-r from-[#F2A931] to-transparent opacity-80"></span>
+        <div className="min-h-full p-6 md:p-12">
+            <div className="mb-10">
+                <span className="text-[#1E3A8A] text-sm font-semibold uppercase mb-2 block">Panel de Administración</span>
+                <h1 className="text-4xl text-[#0F172A] font-bold leading-tight">
+                    Usuarios<span className="text-[#F59E0B]">.</span>
                 </h1>
             </div>
             <ListaUsuarios/>

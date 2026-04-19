@@ -96,32 +96,30 @@ const FormularioModificarPublicacion: React.FC<Props> = ({
   //Parte visible
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-md mx-auto space-y-6 bg-transparent">
-      <h2 className="text-xl font-bold text-white tracking-widest uppercase mb-4">
+    <form onSubmit={handleSubmit} className="max-w-md mx-auto space-y-4">
+      <h2 className="text-lg font-bold text-[#0F172A] mb-4">
         Modificar Publicación
       </h2>
 
-      <div className="group">
-        <label htmlFor="titulo" className="block text-[11px] font-bold uppercase tracking-widest text-[#F2A931] mb-2">
+      <div className="flex flex-col space-y-1">
+        <label htmlFor="titulo" className="text-sm font-medium text-[#0F172A]">
           Nuevo título
         </label>
-        <input type="text" id="titulo" name="titulo" value={titulo} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTitulo(e.target.value)} required className="w-full rounded-2xl border border-white/10 bg-[#1e293b]/50 px-5 py-4 text-sm text-white shadow-inner transition-all hover:bg-white/5 focus:border-[#F2A931]/50 focus:bg-[#1e293b]/80 focus:outline-none focus:ring-1 focus:ring-[#F2A931]/60" />
+        <input type="text" id="titulo" name="titulo" value={titulo} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTitulo(e.target.value)} required className="w-full px-3 py-2 border border-gray-300 rounded-md text-[#0F172A] focus:outline-none focus:border-[#1E3A8A]" />
       </div>
 
-      <div className="group">
-        <label htmlFor="cuerpo" className="block text-[11px] font-bold uppercase tracking-widest text-[#F2A931] mb-2">
+      <div className="flex flex-col space-y-1">
+        <label htmlFor="cuerpo" className="text-sm font-medium text-[#0F172A]">
           Nuevo cuerpo
         </label>
-        <textarea id="cuerpo" name="cuerpo" value={cuerpo} onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setCuerpo(e.target.value)} required className="w-full rounded-2xl border border-white/10 bg-[#1e293b]/50 px-5 py-4 text-sm text-white shadow-inner transition-all hover:bg-white/5 focus:border-[#F2A931]/50 focus:bg-[#1e293b]/80 focus:outline-none focus:ring-1 focus:ring-[#F2A931]/60 min-h-[120px] resize-y" />
+        <textarea id="cuerpo" name="cuerpo" value={cuerpo} onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setCuerpo(e.target.value)} required className="w-full px-3 py-2 border border-gray-300 rounded-md text-[#0F172A] focus:outline-none focus:border-[#1E3A8A] min-h-[120px] resize-y" />
       </div>
 
-      <button type="submit" className="w-full relative overflow-hidden rounded-2xl bg-white/10 border border-white/20 px-6 py-4 text-white font-bold tracking-widest uppercase text-[11px] transition-all duration-300 hover:bg-[#F2A931] hover:text-[#0a0f1a] hover:border-[#F2A931] hover:-translate-y-1 focus:outline-none group/btn mt-4">
-        <span className="relative z-10 flex items-center justify-center gap-2">
-          Guardar Cambios
-        </span>
+      <button type="submit" className="w-full bg-[#1E3A8A] text-white font-medium py-2 rounded-md hover:bg-blue-800 transition-colors cursor-pointer mt-4">
+        Guardar Cambios
       </button>
 
-      {mensaje && <p className="text-sm text-[#F2A931] mt-4 font-bold text-center">{mensaje}</p>}
+      {mensaje && <p className="text-sm text-[#3B82F6] mt-4 font-medium text-center">{mensaje}</p>}
     </form>
   );
 };

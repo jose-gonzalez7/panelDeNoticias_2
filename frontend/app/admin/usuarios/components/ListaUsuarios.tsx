@@ -101,75 +101,70 @@ useEffect(() => {
 
 //Parte visible
 return (
-    <div className="w-full z-10 space-y-12">
+    <div className="w-full z-10 space-y-8">
 
         <FormularioUsuario onCreado={fetchUsuarios}/>
 
         <div>
-            <h2 className="text-xl md:text-2xl font-bold mb-6 text-white tracking-tight flex items-center">
-              <span className="w-1.5 h-6 bg-[#F2A931] rounded-full mr-3 border border-white/20"></span>
+            <h2 className="text-xl md:text-2xl font-bold mb-6 text-[#0F172A] tracking-tight flex items-center">
+              <span className="w-1.5 h-6 bg-[#1E3A8A] rounded-full mr-3"></span>
               Lista de Usuarios
             </h2>
 
-            {cargando && <p className="text-[#F2A931] animate-[pulse_1.5s_ease-in-out_infinite] font-semibold tracking-wide">Cargando usuarios...</p>}
-            {error && <div className="p-5 rounded-[1.5rem] bg-red-900/30 border border-red-500/30 text-red-200 backdrop-blur-md shadow-lg font-medium">{error}</div>}
+            {cargando && <p className="text-[#64748B] font-semibold tracking-wide">Cargando usuarios...</p>}
+            {error && <div className="p-4 rounded bg-red-100 border border-red-200 text-red-700 font-medium">{error}</div>}
 
             {!cargando && !error && (
-                <div className="relative group/table mb-10">
-                    <div className="absolute -inset-1 bg-gradient-to-r from-[#1e293b] to-[#F2A931] rounded-[2rem] blur opacity-10 group-hover/table:opacity-20 transition-opacity duration-500"></div>
-                    <div className="overflow-x-auto rounded-[2rem] border border-white/5 shadow-[0_8px_32px_0_rgba(0,0,0,0.3)] bg-[#0a0f1a]/60 backdrop-blur-2xl relative z-10">
-                        <div className="absolute top-0 left-0 w-32 h-32 bg-[#F2A931]/5 rounded-full blur-2xl pointer-events-none"></div>
-                        <table className="w-full min-w-[600px] table-auto border-collapse relative z-10">
-                            <thead>
-                                <tr className="bg-[#1e293b]/40 text-left text-[11px] uppercase tracking-[0.2em] text-slate-400 border-b border-white/5">
-                                    <th className="px-6 py-5 font-bold">Nombre</th>
-                                    <th className="px-6 py-5 font-bold">Email</th>
-                                    <th className="px-6 py-5 font-bold">Rol</th>
-                                    <th className="px-6 py-5 font-bold text-center">Acciones</th>
-                                </tr>
-                            </thead>
+                <div className="bg-white border border-gray-200 rounded-lg overflow-x-auto mb-10">
+                    <table className="w-full min-w-[600px] table-auto border-collapse">
+                        <thead>
+                            <tr className="bg-gray-50 text-left text-xs uppercase tracking-wider text-[#64748B] border-b border-gray-200">
+                                <th className="px-6 py-4 font-semibold">Nombre</th>
+                                <th className="px-6 py-4 font-semibold">Email</th>
+                                <th className="px-6 py-4 font-semibold">Rol</th>
+                                <th className="px-6 py-4 font-semibold text-center">Acciones</th>
+                            </tr>
+                        </thead>
 
-                            <tbody className="divide-y divide-white/5">
-                                {usuarios.map((usuario, index) => (
-                                    <tr
-                                        key={usuario.email || `usuario-${usuario.id}-${index}`}
-                                        className="text-sm hover:bg-[#1e293b]/30 transition-colors"
-                                    >
-                                        <td className="px-6 py-5 font-semibold text-gray-200 whitespace-nowrap">{usuario.nombre}</td>
-                                        <td className="px-6 py-5 font-mono text-slate-400 whitespace-nowrap">{usuario.email}</td>
-                                        <td className="px-6 py-5">
-                                            <span className="px-3 py-1.5 rounded-full bg-[#1e293b] border border-white/10 text-[#F2A931] text-[10px] font-bold uppercase tracking-widest shadow-inner">
-                                                {usuario.rol}
-                                            </span>
-                                        </td>
-                                        <td className="px-6 py-5 text-center">
-                                            <div className="flex justify-center gap-6">
-                                                <button 
-                                                    className="text-slate-400 font-bold hover:text-[#F2A931] transition-colors underline-offset-4 hover:underline whitespace-nowrap" 
-                                                    onClick={() => setUsuarioEditando(usuario)}
-                                                >
-                                                    Editar
-                                                </button>
-                                                <button 
-                                                    className="text-slate-500 font-bold hover:text-red-400 transition-colors underline-offset-4 hover:underline whitespace-nowrap" 
-                                                    onClick={() => setUsuarioEliminando(usuario)}
-                                                >
-                                                    Eliminar
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
+                        <tbody className="divide-y divide-gray-200">
+                            {usuarios.map((usuario, index) => (
+                                <tr
+                                    key={usuario.email || `usuario-${usuario.id}-${index}`}
+                                    className="text-sm hover:bg-gray-50 transition-colors"
+                                >
+                                    <td className="px-6 py-4 font-medium text-[#0F172A] whitespace-nowrap">{usuario.nombre}</td>
+                                    <td className="px-6 py-4 text-[#64748B] whitespace-nowrap">{usuario.email}</td>
+                                    <td className="px-6 py-4">
+                                        <span className="px-2.5 py-1 rounded-md bg-[#1E3A8A]/10 text-[#1E3A8A] text-xs font-semibold uppercase tracking-wider">
+                                            {usuario.rol}
+                                        </span>
+                                    </td>
+                                    <td className="px-6 py-4 text-center">
+                                        <div className="flex justify-center gap-4">
+                                            <button 
+                                                className="text-[#3B82F6] font-medium hover:text-blue-800 transition-colors cursor-pointer" 
+                                                onClick={() => setUsuarioEditando(usuario)}
+                                            >
+                                                Editar
+                                            </button>
+                                            <button 
+                                                className="text-[#EF4444] font-medium hover:text-red-800 transition-colors cursor-pointer" 
+                                                onClick={() => setUsuarioEliminando(usuario)}
+                                            >
+                                                Eliminar
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
                 </div>
             )}
 
             {usuarioEditando && (
-                <div className="mt-10 mb-10 relative">
-                    <div className="absolute -inset-1 bg-gradient-to-r from-[#1e293b] to-blue-600/30 rounded-[2rem] blur opacity-15"></div>
-                    <div className="p-8 rounded-[2rem] bg-[#0a0f1a]/80 border border-white/5 shadow-2xl backdrop-blur-2xl relative z-10">
+                <div className="mt-8 mb-8">
+                    <div className="p-8 rounded-lg bg-white border border-gray-200">
                         <FormularioModificarUsuario 
                             nombreActual={usuarioEditando.nombre} 
                             email={usuarioEditando.email} 
@@ -183,9 +178,8 @@ return (
             )}
 
             {usuarioEliminando && (
-                <div className="mt-10 mb-10 relative">
-                    <div className="absolute -inset-1 bg-gradient-to-r from-red-600 to-[#F2A931] rounded-[2rem] blur opacity-15"></div>
-                    <div className="p-8 rounded-[2rem] bg-[#0a0f1a]/80 border border-red-500/20 shadow-2xl backdrop-blur-2xl relative z-10">
+                <div className="mt-8 mb-8">
+                    <div className="p-8 rounded-lg bg-white border border-red-200">
                         <EliminarUsuarios 
                             email={usuarioEliminando.email} 
                             onEliminado={() => {
@@ -194,7 +188,7 @@ return (
                             }}
                         />
                         <button 
-                            className="mt-6 w-full text-center py-4 border border-white/10 rounded-2xl bg-white/5 text-sm font-bold text-slate-300 hover:text-white hover:bg-white/10 hover:border-white/20 transition-all font-sans uppercase tracking-[0.1em]" 
+                            className="mt-4 w-full py-2 border border-gray-300 rounded text-sm font-semibold text-[#64748B] hover:bg-gray-50 transition-colors cursor-pointer" 
                             onClick={() => setUsuarioEliminando(null)}
                         >
                             Cancelar
