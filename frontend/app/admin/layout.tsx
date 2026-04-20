@@ -15,5 +15,7 @@ const DashboardLayout: FC<PropsWithChildren> = ({children}) => {
         </div>
     );
 };
-
+/**
+ * prueba
+ */
 export default DashboardLayout;
